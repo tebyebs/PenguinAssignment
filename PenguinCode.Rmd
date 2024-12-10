@@ -8,6 +8,15 @@ date: "2023-10-09"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tinytex)
+library(dplyr)
+library(janitor)
+library(ggplot2)
+library(here)
+library(palmerpenguins)
+source(here("functions", "cleaning.R"))
+renv::restore()
 ```
 
 *The following is a template .rmd RMarkdown file for you to use for your homework submission.*
@@ -30,6 +39,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ### a) Provide your figure here:
 
 ```{r bad figure code, echo=FALSE}
+#Load Raw Data
+penguins_raw <- read_csv(here("data", "penguins_raw.csv"), show_col_types = FALSE)
+#Cleaning the data
+penguins_clean <- penguins_raw %>%
+  clean_column_names() %>%
+  remove_columns(c("comments", "delta")) %>%
+  shorten_species() %>%
+  remove_empty_columns_rows()
 
 # There is no need to provide the code for your bad figure, just use echo=FALSE so the code is hidden. Make sure your figure is visible after you knit it. 
 
@@ -143,8 +160,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   *Did it run? Did you need to fix anything?*
 
--   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?* 
-
+-   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
 
 -   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
 
