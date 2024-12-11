@@ -9,6 +9,7 @@ date: "2023-10-09"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 renv::restore()
+#Installs all required packages
 library(tidyverse)
 library(tinytex)
 library(dplyr)
@@ -16,7 +17,10 @@ library(janitor)
 library(ggplot2)
 library(here)
 library(palmerpenguins)
+library(ragg)
+library(svglite)
 source(here("functions", "cleaning.R"))
+source(here("functions", "plotting.R"))
 ```
 
 *The following is a template .rmd RMarkdown file for you to use for your homework submission.*
@@ -39,14 +43,17 @@ source(here("functions", "cleaning.R"))
 ### a) Provide your figure here:
 
 ```{r bad figure code, echo=FALSE}
-#Load Raw Data
-penguins_raw <- read_csv(here("data", "penguins_raw.csv"), show_col_types = FALSE)
-#Cleaning the data
-penguins_clean <- penguins_raw %>%
-  clean_column_names() %>%
-  remove_columns(c("comments", "delta")) %>%
-  shorten_species() %>%
-  remove_empty_columns_rows()
+#Loading the data (note: previous steps have been taken to ensure a clean csv)
+penguins_clean <- read.csv(here("data", "penguins_clean.csv"))
+
+bad_means <- aggregate(flipper_length_mm ~ species, data = penguins_clean, FUN = mean)
+
+badplot <- ggplot(
+  data = bad_means, 
+  aes(x = species, 
+      y = flipper_length_mm)) +
+  geom_point()
+badplot
 
 # There is no need to provide the code for your bad figure, just use echo=FALSE so the code is hidden. Make sure your figure is visible after you knit it. 
 
