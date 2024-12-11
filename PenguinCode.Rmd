@@ -127,6 +127,8 @@ badplot
 
 ### Introduction
 
+The palmerpenguins dataset contains information about 3 species of penguins: Adelie, Gentoo and Chinstrap. Before we can begin using this data, we must load the raw data and clean it using the functions in our cleaning.R file. Next, an exploratory figure of the penguin's culmen (beak) length and depth is generated using the *plot_scatter* function located in plotting.R. This figure is saved to svg format using the *save_plot_svg* function, also located in plotting.R.
+
 ```{r Data Exploration}
 # All packages/functions have been loaded in the R setup chunk at the start of this file using renv
 # Save the raw data to csv as a read only back-up:
@@ -162,10 +164,13 @@ exploratory_fig
 
 #Saving the figure
 save_plot_svg(exploratory_fig, here("figures", "Exploratory_Figure.svg"), 90,60, 3.5)
-
 ```
 
+From the plot above, we can see that there does not seem to be an overall relationship between length and depth. Interestingly, however, we can observe that within different species, there appears to be a positive correlation between culmen length and depth. Therefore, there are two tests we can carry out: one looking for a correlation at the multi-species level and one looking for a relationship within species.
+
 ### Hypothesis
+
+Null Hypothesis: There is no correlation within species
 
 ### Statistical Methods
 
