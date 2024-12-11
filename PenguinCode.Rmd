@@ -180,7 +180,7 @@ Second Alternative Hypothesis: There is a correlation between culmen length and 
 
 ### Statistical Methods
 
-Two sets of linear regression between are carried out, one for the entire penguins dataset
+Two sets of linear regression between culmen length and depth are carried out, one for the entire penguins dataset, and one for each individual species. This results in four total regressions.
 
 ```{r Statistics}
 
@@ -193,8 +193,11 @@ Two sets of linear regression between are carried out, one for the entire pengui
 
 ```{r Plotting Results}
 
-plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm, "Adelie",,,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours)
+adelie_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Adelie")
 
+chinstrap_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Chinstrap")
+
+gentoo_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Gentoo")
 
 # Make sure your code prints. 
 

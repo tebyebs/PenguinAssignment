@@ -89,17 +89,17 @@ save_plot_svg <- function(plot,
 plot_scatter_lm <- function(data,
                          x_axis, 
                          y_axis,
-                         penguins1 = NULL,
-                         penguins2 = NULL,
-                         penguins3 = NULL,
                          x_label, 
                          y_label,
                          Species,
-                         colour_mapping) {
+                         colour_mapping,
+                         penguins1 = NULL,
+                         penguins2 = NULL,
+                         penguins3 = NULL) {
   
   # Now make the plot
   ggplot(data = data %>% 
-           filter(species %in% c(penguins1, penguins2, penguins3)),
+           filter(species %in% c(penguins1, penguins2, penguins3)), #filters which species to plot
          aes(x = {{x_axis}},
              y = {{y_axis}},
              color = {{Species}}, 
