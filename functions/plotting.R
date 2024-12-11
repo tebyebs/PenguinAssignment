@@ -84,3 +84,32 @@ save_plot_svg <- function(plot,
   print(plot)
   dev.off()
 }
+
+# plots linear model scatter graph
+plot_scatter_lm <- function(data,
+                         x_axis, 
+                         y_axis,
+                         penguins1 = NULL,
+                         penguins2 = NULL,
+                         penguins3 = NULL,
+                         x_label, 
+                         y_label,
+                         Species,
+                         colour_mapping) {
+  
+  # Now make the plot
+  ggplot(data = data %>% 
+           filter(species %in% c(penguins1, penguins2, penguins3)),
+         aes(x = {{x_axis}},
+             y = {{y_axis}},
+             color = {{Species}}, 
+             shape = {{Species}})) +
+    geom_point(size = 2, alpha = 0.8) +
+    geom_smooth(method = "lm", color = "cyan") +
+    labs(x = x_label,
+         y = y_label) +
+    scale_color_manual(values = colour_mapping) +
+    theme_light() +
+    theme(legend.position = "bottom")
+}
+

@@ -170,11 +170,20 @@ From the plot above, we can see that there does not seem to be an overall relati
 
 ### Hypothesis
 
-Null Hypothesis: There is no correlation within species
+First Null Hypothesis: There is no overall correlation between culmen length and depth across penguin species.
+
+First Alternative Hypothesis: There is an overall correlation between culmen length and depth across penguin species.
+
+Second Null Hypothesis: There is no correlation between culmen length and depth within penguin species.
+
+Second Alternative Hypothesis: There is a correlation between culmen length and depth within penguin species.
 
 ### Statistical Methods
 
+Two sets of linear regression between are carried out, one for the entire penguins dataset
+
 ```{r Statistics}
+
 
 # Make sure your code prints. 
 
@@ -183,6 +192,9 @@ Null Hypothesis: There is no correlation within species
 ### Results & Discussion
 
 ```{r Plotting Results}
+
+plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm, "Adelie",,,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours)
+
 
 # Make sure your code prints. 
 
