@@ -18,6 +18,7 @@ library(ggplot2)
 library(here)
 library(palmerpenguins)
 library(ragg)
+library(broom)
 library(svglite)
 source(here("functions", "cleaning.R"))
 source(here("functions", "plotting.R"))
@@ -183,15 +184,42 @@ Second Alternative Hypothesis: There is a correlation between culmen length and 
 Two sets of linear regression between culmen length and depth are carried out, one for the entire penguins dataset, and one for each individual species. This results in four total regressions.
 
 ```{r Statistics}
+all_penguin_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
+                          group_by(species)) 
+summary(all_penguin_model)
 
+adelie_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
+                          filter(species %in% c("Adelie")))
+summary(adelie_model)
 
-# Make sure your code prints. 
+chinstrap_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
+                          filter(species %in% c("Chinstrap")))
+summary(chinstrap_model)
 
+gentoo_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
+                          filter(species %in% c("Gentoo")))
+summary(gentoo_model)
+
+r_squared_by_group <- culmen_data %>%
+  group_by(species) %>%
+  summarise(r_squared = cor(culmen_length_mm, culmen_depth_mm)^2)
+print(r_squared_by_group)
 ```
 
 ### Results & Discussion
 
 ```{r Plotting Results}
+
+overall_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Adelie","Chinstrap","Gentoo")
+
+ggplot(culmen_data,
+         aes(x = culmen_length_mm,
+             y = culmen_depth_mm,
+             color = species)) +
+    geom_point(size = 2, alpha = 0.8) +
+    geom_smooth(method = "lm", color = "cyan") +
+    theme_light() +
+    theme(legend.position = "bottom")
 
 adelie_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Adelie")
 
