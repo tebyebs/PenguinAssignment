@@ -73,11 +73,13 @@ save_plot_png <- function(plot,
 #saves svgs
 save_plot_svg <- function(plot,
                           filename,
-                          size,
+                          width,
+                          height,
                           scaling){
-  size_inches = size/2.54
-  svglite(filename, width   = size_inches, 
-          height  = size_inches, 
+  width_inches = width/2.54
+  height_inches = height/2.54
+  svglite(filename, width   = width_inches, 
+          height  = height_inches, 
           scaling = scaling)
   print(plot)
   dev.off()
