@@ -128,8 +128,43 @@ badplot
 ### Introduction
 
 ```{r Data Exploration}
+# All packages/functions have been loaded in the R setup chunk at the start of this file using renv
+# Save the raw data to csv as a read only back-up:
+write.csv(penguins_raw, here("data", "penguins_raw.csv"))
 
-# Make sure your code prints. 
+# Load the raw data and clean it 
+penguins_raw <- read_csv(here("data", "penguins_raw.csv"))
+penguins_clean <- penguins_raw %>%
+  clean_column_names() %>%
+  remove_columns(c("comments", "delta")) %>%
+  shorten_species() %>%
+  remove_empty_columns_rows()
+
+#Ensure output is clean
+names(penguins_clean)
+
+#Save the cleaned data
+write_csv(penguins_clean, here("data", "penguins_clean.csv"))
+
+#Subset the data of interest
+culmen_data <- penguins_clean %>%
+  select(culmen_length_mm, culmen_depth_mm, species) %>%
+  drop_na()
+
+#Exploratory figure 
+species_colours <- c("Adelie" = "darkorange", 
+                    "Chinstrap" = "purple", 
+                    "Gentoo" = "cyan4")
+
+results_scatterplot <- ggplot(culmen_data, aes(x=culmen_length_mm,y=culmen_depth_mm, color=species, shape = species)) +
+  geom_point(size = 2, alpha = 0.8) +
+  scale_color_manual(values = species_colours) +
+  labs(x = "Culmen Length (mm)",
+         y = "Culmen Depth (mm)") +
+  theme_light() +
+  theme(legend.position = "bottom")
+
+results_scatterplot
 
 ```
 
