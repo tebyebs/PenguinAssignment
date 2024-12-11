@@ -161,7 +161,7 @@ exploratory_fig <- plot_scatter(culmen_data, culmen_length_mm, culmen_depth_mm,"
 exploratory_fig
 
 #Saving the figure
-save_plot_svg(exploratory_fig, here("figures", "Exploratory_Figure.svg"), 80,60, 3)
+save_plot_svg(exploratory_fig, here("figures", "Exploratory_Figure.svg"), 90,60, 3.5)
 
 ```
 
