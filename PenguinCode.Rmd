@@ -61,9 +61,19 @@ badplot
 
 ### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
 
-*Include references.*
+*There are three overarching mistakes made with the design choices for the above chart:*
 
-------------------------------------------------------------------------
+-   Wrong chart type selection: A scatter plot is used, despite the fact that x-axis is categorical (species). Therefore the distance between dots does not show any useful information, and confuse the reader. Instead, a bar chart would be more appropriate.
+-   Oversimplified data: By averaging the flipper lengths, the information shown is reduced to just a single point and therefore the variation, SD etc are all missing. Furthermore, the single dot does not convey the meaning of the data well, as a reader would struggle to realise that it represents the mean length. To correct this, a change in chart type as well as clear labeling is needed.
+-   Truncated y-axis: The y-axis begins from 190, exaggerating the difference in flipper lengths between the different species. This misdirects the reader, as the actual difference between chinstrap and gentoo flipper length is 5% but the difference between dots is visually represented as being 200%.
+
+*Sources:*
+
+-   Sturge, Georgina. Bad Data. 3 Nov. 2022.
+
+-   Keller, H., and Ch Trendelenburg. Data Presentation / Interpretation. Berlin, De Gruyter, 2019.
+
+    ------------------------------------------------------------------------
 
 ## QUESTION 2: Data Pipeline
 
