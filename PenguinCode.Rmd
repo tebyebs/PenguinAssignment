@@ -156,9 +156,12 @@ species_colours <- c("Adelie" = "darkorange",
                     "Chinstrap" = "purple", 
                     "Gentoo" = "cyan4")
 
-plot_scatter(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours )
+exploratory_fig <- plot_scatter(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours )
 
+exploratory_fig
 
+#Saving the figure
+save_plot_svg(exploratory_fig, here("figures", "Exploratory_Figure.svg"), 40, 4)
 
 ```
 
