@@ -37,23 +37,20 @@ plot_scatter <- function(data,
                          y_axis, 
                          x_label, 
                          y_label,
-                         colour_factor) {
+                         Species,
+                         colour_mapping) {
   
   # Now make the plot
-  ggplot(data = data, 
-         aes(
-           x =  x_axis, 
-           y =  y_axis, 
-           color =  colour_factor,
-           shape = colour_factor)) +  # Use {{ }} for x and y columns
-    geom_point(
-      size = 2,
-      alpha = 0.8,
-      show.legend = FALSE) +
-    labs(
-      x = x_label, 
-      y = y_label) +  # Use provided x and y labels
-    theme_light() + 
+  ggplot(data = data,
+         aes(x = {{x_axis}},
+             y = {{y_axis}},
+             color = {{Species}}, 
+             shape = {{Species}})) +
+    geom_point(size = 2, alpha = 0.8) +
+    labs(x = x_label,
+         y = y_label) +
+    scale_color_manual(values = colour_mapping) +
+    theme_light() +
     theme(legend.position = "bottom")
 }
 
