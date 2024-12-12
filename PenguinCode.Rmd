@@ -1,16 +1,17 @@
 ---
-title: "Homework Template"
+title: "Palmer Penguins Assignment"
 output:
   pdf_document: default
   html_document: default
-date: "2023-10-09"
+date: "2024-12-12"
 ---
 
 ```{r renv}
 renv::restore()
 #Installs all required packages
 #If renv::restore is not working, please run the activate.R file under the renv folder
-#renv seems to have issues with installing base R packages, please use posit cloud if issues persist
+#renv seems to have issues with installing base R packages
+#please use posit cloud if issues persist
 ```
 
 ```{r setup, message = F, warning = F}
@@ -140,13 +141,13 @@ badplot
 
 The palmerpenguins dataset contains information about 3 species of penguins: Adelie, Gentoo and Chinstrap. Before we can begin using this data, we must load the raw data and clean it using the functions in our cleaning.R file. Next, an exploratory figure of the penguin's culmen (beak) length and depth is generated using the *plot_scatter* function located in plotting.R. This figure is saved to svg format using the *save_plot_svg* function, also located in plotting.R.
 
-```{r Data Cleaning}
+```{r Data Cleaning, message=FALSE }
 # All packages/functions have been loaded in the R setup chunk at the start of this file using renv
 # Save the raw data to csv as a read only back-up:
 write.csv(penguins_raw, here("data", "penguins_raw.csv"))
 
-# Load the raw data and clean it 
-penguins_raw <- read_csv(here("data", "penguins_raw.csv"))
+# Load the raw data and clean it
+penguins_raw <- read_csv(here("data", "penguins_raw.csv"), show_col_types = F)
 penguins_clean <- penguins_raw %>%
   clean_column_names() %>%
   remove_columns(c("comments", "delta")) %>%
@@ -174,7 +175,13 @@ species_colours <- c("Adelie" = "darkorange",
                     "Chinstrap" = "purple", 
                     "Gentoo" = "cyan4")
 
-exploratory_fig <- plot_scatter(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours )
+exploratory_fig <- plot_scatter(culmen_data, 
+                                culmen_length_mm, 
+                                culmen_depth_mm,
+                                "Culmen Length (mm)", 
+                                "Culmen Depth (mm)", 
+                                species, 
+                                species_colours )
 
 exploratory_fig
 ```
@@ -257,21 +264,27 @@ This visualization is helpful because it demonstrates the slight negative relati
 
 ```{r}
 #Plotting relationship for Adelie Penguins
-adelie_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Adelie")
+adelie_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,
+                             "Culmen Length (mm)", "Culmen Depth (mm)", 
+                             species, species_colours,"Adelie")
 
 adelie_lm
 ```
 
 ```{r}
 #Plotting relationship for Chinstrap Penguins
-chinstrap_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Chinstrap")
+chinstrap_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,
+                                "Culmen Length (mm)", "Culmen Depth (mm)", 
+                                species, species_colours,"Chinstrap")
 
 chinstrap_lm
 ```
 
 ```{r}
 #Plotting relationship for Gentoo Penguins
-gentoo_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Gentoo")
+gentoo_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,
+                             "Culmen Length (mm)", "Culmen Depth (mm)", 
+                             species, species_colours,"Gentoo")
 
 gentoo_lm
 ```
@@ -295,7 +308,7 @@ save_plot_svg(combined_plot, here("figures", "Combined_Plot.svg"), 90,60, 3.5)
 
 ### Conclusion
 
-Taken into account the results, we can reject the first alternative hypothesis, since although there is a slight negative correlation, it is not of biological significance due to its low $r^2$. Generally, $r^2$ between 0.15 and 0.5 are considered high enough to determine if a factor is establishing a relationship, and this falls below this spectrum with an $r^2$ of 0.05. I argue that the negative relationship between culmen length and depth across species is instead due to the penguins being 3 different species instead, and therefore the possible culmen variation lies in different morphological space for each. In this instance, longer culmen species such as Gentoo actually have thinner culmens compared to the other species. There are several possible reasons for this, such as some kind of trade off or evolution to feed in a particular niche.
+Taken into account the results, we can reject the first alternative hypothesis, since although there is a slight negative correlation, it is not of biological significance due to its low $r^2$. Generally, $r^2$ between 0.15 and 0.5 are considered high enough to determine if a factor is involved in a relationship, and this falls below this spectrum with an $r^2$ of 0.05. I argue that the negative relationship between culmen length and depth across species is instead due to the penguins being 3 different species instead, and therefore the possible culmen variation lies in a different morphological space for each. In this instance, longer culmen species such as Gentoo actually have thinner culmens compared to the other species. There are several possible reasons for this, such as some kind of trade off or evolution to feed in a particular niche.
 
 Interestingly, however, within each species, this trend reverses and we can see a clear statistically significant positive correlation, with p-values for all three species \<0.001. The $r^2$ value for each species is higher, with the Adelie penguins being 0.153, the Chinstrap being 0.427, and the Gentoo being 0.414. This suggests that within a species, as culmen length increases, so too does culmen depth, and therefore culmen length explains a large proportion of variation in culmen depth. With this, we can reject the second null hypothesis as there does seem to be a relationship.
 
@@ -321,7 +334,7 @@ Interestingly, however, within each species, this trend reverses and we can see 
 
 -   *What elements of your partner's code helped you to understand their data pipeline?*
 
-    Each step of the data pipeline was clearly labelled, specifically the annotations included in each chunk. By explaining what the code was doing before running, the resulting diagrams were much more understandable. Furthermore, since each of the main pieces of code were segregated into a chunk of their own, running the pipeline was streamlined and intuitive. Furthermore, since the various aspects of the pipeline were self-contained in clearly labelled folders, such as the figures, reviewing the results was straightforward.
+    Each step of the data pipeline was clearly labelled, specifically the annotations included in each chunk. By explaining what the code was doing before running, the resulting diagrams were much more understandable. Furthermore, since each of the main pieces of code were segregated into a chunk of their own, running the pipeline was streamlined and intuitive. Finally, since the various aspects of the pipeline were self-contained in clearly labelled folders, such as the figures, reviewing the results was straightforward.
 
 -   *Did it run? Did you need to fix anything?*
 
@@ -343,4 +356,4 @@ Interestingly, however, within each species, this trend reverses and we can see 
 
 -   *What did you learn about writing code for other people?*
 
-    Writing code for others forced me to consider that the information will be viewed from different perspectives and environments, and these will not always be the same as mine. For example, a new user would have limited context about the scope and background of a project. Therefore, I was forced to standardise the process for presenting the data pipeline, ensuring that each step was made explicitly clear such that anyone, regardless of their prior knowledge about the project, would be able to follow. This meant repeating multiple sections of code that were hastily and uncleanly made; refining them so that they would be as simple as possible to understand and then labeling each part of a chunk so that a user could follow along with the functions. In the end, however, this was beneficial for me as it meant that any errors that came up were easy to trace and could quickly be remedied.
+    Writing code for others forced me to consider that the information will be viewed from different perspectives and environments, and these will not always be the same as mine. For example, a new user would have limited context about the scope and background of a project. Therefore, I was forced to standardise the process for presenting the data pipeline, ensuring that each step was made explicitly clear such that anyone, regardless of their prior knowledge about the project, would be able to follow. This meant that instead of repeating multiple sections of code that were hastily and uncleanly made, I spent some time refining them so that they would be as simple as possible to understand and then labelled each part of a chunk so that a user could follow along with the functions. In the end, this was beneficial for me as it meant that any errors that came up were easy to trace and could quickly be remedied.
