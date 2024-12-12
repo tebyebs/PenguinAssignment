@@ -8,14 +8,14 @@ date: "2023-10-09"
 
 ```{r setup}
 renv::restore()
+#Installs all required packages
 #If renv::restore is not working, please run the activate.R file under the renv folder
+#renv seems to have issues with installing base R packages, please use posit cloud if issues persist
 ```
-
 
 ```{r setup, message = F, warning = F}
 library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
-#Installs all required packages
 library(tidyverse)
 library(tinytex)
 library(dplyr)
@@ -27,6 +27,7 @@ library(ragg)
 library(broom)
 library(svglite)
 library(patchwork)
+
 here::here()
 source(here("functions", "cleaning.R"))
 source(here("functions", "plotting.R"))
@@ -139,7 +140,7 @@ badplot
 
 The palmerpenguins dataset contains information about 3 species of penguins: Adelie, Gentoo and Chinstrap. Before we can begin using this data, we must load the raw data and clean it using the functions in our cleaning.R file. Next, an exploratory figure of the penguin's culmen (beak) length and depth is generated using the *plot_scatter* function located in plotting.R. This figure is saved to svg format using the *save_plot_svg* function, also located in plotting.R.
 
-```{r Data Exploration}
+```{r Data Cleaning}
 # All packages/functions have been loaded in the R setup chunk at the start of this file using renv
 # Save the raw data to csv as a read only back-up:
 write.csv(penguins_raw, here("data", "penguins_raw.csv"))
@@ -163,6 +164,11 @@ culmen_data <- penguins_clean %>%
   select(culmen_length_mm, culmen_depth_mm, species) %>%
   drop_na()
 
+#Show this data subset
+head(culmen_data)
+```
+
+```{r Exploratory Figure}
 #Exploratory figure 
 species_colours <- c("Adelie" = "darkorange", 
                     "Chinstrap" = "purple", 
@@ -171,12 +177,14 @@ species_colours <- c("Adelie" = "darkorange",
 exploratory_fig <- plot_scatter(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours )
 
 exploratory_fig
-
-#Saving the figure
-save_plot_svg(exploratory_fig, here("figures", "Exploratory_Figure.svg"), 90,60, 3.5)
 ```
 
 From the plot above, we can see that there does not seem to be an overall relationship between length and depth. Interestingly, however, we can observe that within different species, there appears to be a positive correlation between culmen length and depth. Therefore, there are two tests we can carry out: one looking for a correlation at the multi-species level and one looking for a relationship within species.
+
+```{r Saving the Figure}
+#Saving the figure
+save_plot_svg(exploratory_fig, here("figures", "Exploratory_Figure.svg"), 90,60, 3.5)
+```
 
 ### Hypothesis
 
@@ -192,43 +200,41 @@ Second Alternative Hypothesis: There is a correlation between culmen length and 
 
 Two sets of linear regression between culmen length and depth are carried out, one for the entire penguins dataset, and one for each individual species. This results in four total regressions.
 
+Firstly, the linear regression for all pengion species is calculated
+
 ```{r Statistics}
 #Runs a linear regression for all of the penguins
-all_penguin_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
-                          group_by(species)) 
+all_penguin_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data)
 summary(all_penguin_model)
+```
 
+As we can see, although there is a slight negative relationship (-0.085), it has a low $R^2$. This will be explored further in the results and discussion. Next, each penguin species is analysed independently.
+
+```{r}
 #Runs a linear regression for the adelie penguins
 adelie_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
                           filter(species %in% c("Adelie")))
 summary(adelie_model)
+```
 
+```{r}
 #Runs a linear regression for the chinstrap penguins
 chinstrap_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
                           filter(species %in% c("Chinstrap")))
 summary(chinstrap_model)
+```
 
+```{r}
 #Runs a linear regression for the gentoo penguins
 gentoo_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
                           filter(species %in% c("Gentoo")))
 summary(gentoo_model)
-
-#calculates the r squared for each species of penguin
-r_squared_by_group <- culmen_data %>%
-  group_by(species) %>%
-  summarise(r_squared = cor(culmen_length_mm, culmen_depth_mm)^2)
-print(r_squared_by_group)
-
-combined_stats <- (summary(all_penguin_model) | r_squared_by_group)
-combined_stats
 ```
 
 ### Results & Discussion
+By plotting the linear regression against the data it will make any relationships clearer. We start by looking at the overall linear regression for all penguin species. 
 
 ```{r Plotting Results}
-
-overall_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Adelie","Chinstrap","Gentoo")
-
 overall_combined_plot <- ggplot(culmen_data,
          aes(x = culmen_length_mm,
              y = culmen_depth_mm,
@@ -241,17 +247,34 @@ overall_combined_plot <- ggplot(culmen_data,
          y = "Culmen Depth (mm)") +
     theme(legend.position = "bottom")
 
+overall_combined_plot
+```
+
+```{r}
+#Plotting relationship for Adelie Penguins
 adelie_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Adelie")
 
+adelie_lm
+```
+
+```{r}
+#Plotting relationship for Chinstrap Penguins
 chinstrap_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Chinstrap")
 
+chinstrap_lm
+```
+
+```{r}
+#Plotting relationship for Gentoo Penguins
 gentoo_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Culmen Length (mm)", "Culmen Depth (mm)", species, species_colours,"Gentoo")
 
+gentoo_lm
+```
+
+```{r Overall Plot}
+#Creating an overall results figure
 combined_plot <- (overall_combined_plot | adelie_lm) / (chinstrap_lm | gentoo_lm)
 combined_plot
-     
-# Make sure your code prints. 
-
 ```
 
 ### Conclusion
