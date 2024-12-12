@@ -1,12 +1,12 @@
 ---
 title: "Homework Template"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 date: "2023-10-09"
 ---
 
-```{r setup}
+```{r renv}
 renv::restore()
 #Installs all required packages
 #If renv::restore is not working, please run the activate.R file under the renv folder
@@ -307,13 +307,13 @@ Interestingly, however, within each species, this trend reverses and we can see 
 
 *Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
 
-*GitHub link:*
+*GitHub link:* <https://github.com/tebyebs/PenguinAssignment>
 
 *You will be marked on your repo organisation and readability.*
 
 ### b) Share your repo with a partner, download, and try to run their data pipeline.
 
-*Partner's GitHub link:*
+*Partner's GitHub link:* <https://github.com/PGAMF/PenguinProject>
 
 *You **must** provide this so I can verify there is no plagiarism between you and your partner.*
 
@@ -321,14 +321,26 @@ Interestingly, however, within each species, this trend reverses and we can see 
 
 -   *What elements of your partner's code helped you to understand their data pipeline?*
 
+    Each step of the data pipeline was clearly labelled, specifically the annotations included in each chunk. By explaining what the code was doing before running, the resulting diagrams were much more understandable. Furthermore, since each of the main pieces of code were segregated into a chunk of their own, running the pipeline was streamlined and intuitive. Furthermore, since the various aspects of the pipeline were self-contained in clearly labelled folders, such as the figures, reviewing the results was straightforward.
+
 -   *Did it run? Did you need to fix anything?*
+
+    The code ran flawlessly except for at the beginning, there were some issues with loading the renv environment using renv::restore() which seemed to prevent some of the packages from initializing correctly. I was, however, able to easily circumnavigate this problem by running the program on posit which seemed to be more up to date. The remaining code all worked as intended.
 
 -   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
 
+    Overall the structure of the code was effective and intuitive, however there were a few aspects that could be improved. Firstly, some of the procedures, such as saving the files, could be made more efficient by using functions rather than repeating the same code over and over again. Furthermore, they could have elaborated on the assumptions underlying their results as they based these on a linear model but did not elucidate any of the possible issues that might have caused the model to be inaccurate. Therefore, some critical analysis of the methods used might lend credence to their conclusions.
+
 -   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
+
+    It would be easy to alter their code since it is split into neat organised chunks that are clearly labelled for the user. Furthermore, since most of the code uses presaved functions, it is easy to determine how they work and the changes that might need to be made, as well as being able to pinpoint where and when in time any changes might have led to an error.
 
 ### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 
 -   *What improvements did they suggest, and do you agree?*
 
+    My code had some issues with loading in the native R Studio environment, as renv required a file (activate.R) to be run before it would load the packages. Occasionally there were issues with downloading these packages also, but this seems to be OS specific. I agree that changing this would improve the usability of my code since it would streamline the loading process, and I was able to alter this so that the code had no errors when run in posit cloud. Furthermore, in my linear regression analysis I did not mention much information about the assumptions of the linear model, such as normality and homoscedasticity, therefore including these as part of the data pipeline would improve the rigor of my results.
+
 -   *What did you learn about writing code for other people?*
+
+    Writing code for others forced me to consider that the information will be viewed from different perspectives and environments, and these will not always be the same as mine. For example, a new user would have limited context about the scope and background of a project. Therefore, I was forced to standardise the process for presenting the data pipeline, ensuring that each step was made explicitly clear such that anyone, regardless of their prior knowledge about the project, would be able to follow. This meant repeating multiple sections of code that were hastily and uncleanly made; refining them so that they would be as simple as possible to understand and then labeling each part of a chunk so that a user could follow along with the functions. In the end, however, this was beneficial for me as it meant that any errors that came up were easy to trace and could quickly be remedied.
