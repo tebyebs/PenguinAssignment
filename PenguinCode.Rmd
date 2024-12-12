@@ -6,9 +6,15 @@ output:
 date: "2023-10-09"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup}
 renv::restore()
+#If renv::restore is not working, please run the activate.R file under the renv folder
+```
+
+
+```{r setup, message = F, warning = F}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
 #Installs all required packages
 library(tidyverse)
 library(tinytex)
@@ -21,6 +27,7 @@ library(ragg)
 library(broom)
 library(svglite)
 library(patchwork)
+here::here()
 source(here("functions", "cleaning.R"))
 source(here("functions", "plotting.R"))
 
@@ -186,26 +193,34 @@ Second Alternative Hypothesis: There is a correlation between culmen length and 
 Two sets of linear regression between culmen length and depth are carried out, one for the entire penguins dataset, and one for each individual species. This results in four total regressions.
 
 ```{r Statistics}
+#Runs a linear regression for all of the penguins
 all_penguin_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
                           group_by(species)) 
 summary(all_penguin_model)
 
+#Runs a linear regression for the adelie penguins
 adelie_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
                           filter(species %in% c("Adelie")))
 summary(adelie_model)
 
+#Runs a linear regression for the chinstrap penguins
 chinstrap_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
                           filter(species %in% c("Chinstrap")))
 summary(chinstrap_model)
 
+#Runs a linear regression for the gentoo penguins
 gentoo_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>% 
                           filter(species %in% c("Gentoo")))
 summary(gentoo_model)
 
+#calculates the r squared for each species of penguin
 r_squared_by_group <- culmen_data %>%
   group_by(species) %>%
   summarise(r_squared = cor(culmen_length_mm, culmen_depth_mm)^2)
 print(r_squared_by_group)
+
+combined_stats <- (summary(all_penguin_model) | r_squared_by_group)
+combined_stats
 ```
 
 ### Results & Discussion
