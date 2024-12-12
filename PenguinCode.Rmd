@@ -200,7 +200,7 @@ Second Alternative Hypothesis: There is a correlation between culmen length and 
 
 Two sets of linear regression between culmen length and depth are carried out, one for the entire penguins dataset, and one for each individual species. This results in four total regressions.
 
-Firstly, the linear regression for all pengion species is calculated
+Firstly, the linear regression for all penguin species is calculated:
 
 ```{r Statistics}
 #Runs a linear regression for all of the penguins
@@ -208,7 +208,7 @@ all_penguin_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data)
 summary(all_penguin_model)
 ```
 
-As we can see, although there is a slight negative relationship (-0.085), it has a low $R^2$. This will be explored further in the results and discussion. Next, each penguin species is analysed independently.
+As we can see, although there is a slight negative relationship (-0.085), it has a low $r^2$. This will be explored further in the results and discussion. Next, each penguin species is analysed independently.
 
 ```{r}
 #Runs a linear regression for the adelie penguins
@@ -231,10 +231,11 @@ gentoo_model <- lm(culmen_depth_mm ~ culmen_length_mm, data = culmen_data %>%
 summary(gentoo_model)
 ```
 
-Individually, the species have a much more significant positive correlation and the $R^2$ is much higher for all species, especially Chinstrap and Gentoo. Before making any further analysis, it is useful to plot these results. 
+Individually, the species have a much more significant positive correlation, with all three p-values \< 0.001 and the $r^2$ is much higher for all species, especially Chinstrap and Gentoo. Before making any further analysis, it is useful to plot these results.
 
 ### Results & Discussion
-By plotting the linear regression against the data it will make any relationships clearer. We start by looking at the overall linear regression for all penguin species. 
+
+By plotting the linear regression against the data it will make any relationships clearer. We start by looking at the overall linear regression for all penguin species.
 
 ```{r Plotting Results}
 overall_combined_plot <- ggplot(culmen_data,
@@ -252,7 +253,7 @@ overall_combined_plot <- ggplot(culmen_data,
 overall_combined_plot
 ```
 
-This visualization is helpful because it demonstrates the slight negative relationship found by the model. As demonstrated in the statistical test, however, it has a very low $R^2$ value of 0.055. This suggests that although the slight negative correlation is significant, with a p-value < 0.001, Culmen Length does not explain most of the actual variation in Culmen Depth. Rather, the negative relationship is probably a factor of the penguins being different species. For now, the next stage is plotting the same relationship for each penguin species. 
+This visualization is helpful because it demonstrates the slight negative relationship found by the model. As demonstrated in the statistical test, however, it has a very low $r^2$ value of 0.055. This suggests that although the slight negative correlation is significant, with a p-value \< 0.001, culmen length does not explain most of the actual variation in culmen depth. Rather, the negative relationship is probably a factor of the penguins being different species. For now, the next stage is plotting the same relationship for each penguin species.
 
 ```{r}
 #Plotting relationship for Adelie Penguins
@@ -275,9 +276,9 @@ gentoo_lm <- plot_scatter_lm(culmen_data, culmen_length_mm, culmen_depth_mm,"Cul
 gentoo_lm
 ```
 
-As shown in the figures, each penguin species individually has a positive relationship. The confidence intervals are shown in grey. 
+As shown in the figures, each penguin species individually has a positive relationship. Combined with the information from the statistical tests for each species, we know this correlation is statistically significant with p-values for all three being \<0.001. Furthermore, since the $r^2$ is higher, within each species culmen length explains more of the variation for culmen depth. Finally, the slope of the lines for each penguin is steeper, compared to the shallow slope of the overall plot, indicating a greater effect size. The confidence intervals are shown in grey.
 
-Before saving these plots, we can combine them into a single figure for a more professional diagram. 
+Before saving these plots, we can combine them into a single figure for a more professional diagram.
 
 ```{r Overall Plot}
 #Creating an overall results figure
@@ -285,14 +286,18 @@ combined_plot <- (overall_combined_plot | adelie_lm) / (chinstrap_lm | gentoo_lm
 combined_plot
 ```
 
+Once again, this is saved as an svg file to preserve quality.
+
 ```{r}
 #Saves this overall plot
 save_plot_svg(combined_plot, here("figures", "Combined_Plot.svg"), 90,60, 3.5)
 ```
 
-
-
 ### Conclusion
+
+Taken into account the results, we can reject the first alternative hypothesis, since although there is a slight negative correlation, it is not of biological significance due to its low $r^2$. Generally, $r^2$ between 0.15 and 0.5 are considered high enough to determine if a factor is establishing a relationship, and this falls below this spectrum with an $r^2$ of 0.05. I argue that the negative relationship between culmen length and depth across species is instead due to the penguins being 3 different species instead, and therefore the possible culmen variation lies in different morphological space for each. In this instance, longer culmen species such as Gentoo actually have thinner culmens compared to the other species. There are several possible reasons for this, such as some kind of trade off or evolution to feed in a particular niche.
+
+Interestingly, however, within each species, this trend reverses and we can see a clear statistically significant positive correlation, with p-values for all three species \<0.001. The $r^2$ value for each species is higher, with the Adelie penguins being 0.153, the Chinstrap being 0.427, and the Gentoo being 0.414. This suggests that within a species, as culmen length increases, so too does culmen depth, and therefore culmen length explains a large proportion of variation in culmen depth. With this, we can reject the second null hypothesis as there does seem to be a relationship.
 
 ------------------------------------------------------------------------
 
