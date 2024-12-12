@@ -14,7 +14,7 @@ renv::restore()
 #please use posit cloud if issues persist
 ```
 
-```{r setup, message = F, warning = F}
+```{r setup, message = F, results = 'hide'}
 library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
